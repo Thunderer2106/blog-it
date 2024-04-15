@@ -32,7 +32,6 @@ export default function Signin() {
       if (data.success === false) {
         dispatch(signInFailure(data.message));
       }
-
       if (res.ok) {
         dispatch(signInSuccess(data));
         navigate("/");
