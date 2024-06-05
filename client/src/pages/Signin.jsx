@@ -7,6 +7,7 @@ import {
   signInFailure,
 } from "../redux/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
+import OAuth from "../components/OAuth.jsx";
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
@@ -33,6 +34,7 @@ export default function Signin() {
         dispatch(signInFailure(data.message));
       }
       if (res.ok) {
+        console.log(data);
         dispatch(signInSuccess(data));
         navigate("/");
       }
@@ -41,8 +43,8 @@ export default function Signin() {
     }
   };
   return (
-    <div className="min-h-screen mt-20">
-      <div className="flex p-3 max-w-3xl mx-auto flex-col md:flex-row md:items-center gap-5">
+    <div className="mt-2">
+      <div className="flex p-3 max-w-3xl min-h-screen mx-auto flex-col md:flex-row md:items-center gap-5">
         {/* left */}
         <div className="flex-1">
           <Link to="/" className="font-bold dark:text-white text-4xl">
@@ -89,6 +91,7 @@ export default function Signin() {
                 "Sign In"
               )}
             </Button>
+            <OAuth />
           </form>
           <div className="flex gap-2 text-sm mt-5">
             <span>Dont Have an account?</span>
