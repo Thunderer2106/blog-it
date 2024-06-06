@@ -18,7 +18,7 @@ const Dashboard = () => {
       <div className="md:w-56">
         <DashSIdebar />
       </div>
-      <div>{tab === "profile" && <DashProfile />}</div>
+      {tab === "profile" && <DashProfile />}
     </div>
   );
 };
