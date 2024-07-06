@@ -125,7 +125,7 @@ const DashProfile = () => {
         setImageFileUploadProgress(null);
         setimage(null);
         setimgurl(null);
-            setImageFileUploading(false);
+        setImageFileUploading(false);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
