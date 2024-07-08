@@ -22,6 +22,7 @@ import {
   deleteUserSuccess,
   deleteUserStart,
 } from "../redux/user/userSlice";
+import { signoutsuccess } from "../redux/user/userSlice";
 const DashProfile = () => {
   const { currentUser, error } = useSelector((state) => state.user);
   const [image, setimage] = useState(null);
@@ -124,10 +125,26 @@ const DashProfile = () => {
         dispatch(deleteUserSuccess(data));
       }
     } catch (error) {
+      console.log("hehe");
       dispatch(deleteUserFailure(error.message));
     }
   };
-
+  const handlesignout = async () => {
+    try {
+      const res = await fetch(`/api/user/signout`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      console.log("signingoff");
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutsuccess());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const uploadImage = async () => {
     setImageFileUploading(true);
     setImageFileUploadError(null);
@@ -237,7 +254,10 @@ const DashProfile = () => {
           {" "}
           Delete Account
         </span>
-        <span className="cursor-pointer"> Sign Out</span>
+        <span onClick={() => handlesignout()} className="cursor-pointer">
+          {" "}
+          Sign Out
+        </span>
       </div>
       {updateUserSuccess && (
         <Alert color="success" className="mt-5">
