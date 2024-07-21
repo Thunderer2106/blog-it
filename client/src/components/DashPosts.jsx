@@ -2,11 +2,12 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { Table, TableRow } from "flowbite-react";
+import { Button, Table, TableRow } from "flowbite-react";
 import { Link } from "react-router-dom";
 const DashPosts = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [userPosts, setUserPosts] = useState([]);
+  const [showMore, setShowMore] = useState(true);
   console.log(userPosts);
   useEffect(() => {
     const fetchPosts = async () => {
@@ -15,6 +16,9 @@ const DashPosts = () => {
         const data = await res.json();
         if (res.ok) {
           setUserPosts(data.posts);
+          if (data.posts.length < 9) {
+            setShowMore(false);
+          }
         }
       } catch (error) {
         console.log(error.message);
@@ -24,8 +28,25 @@ const DashPosts = () => {
       fetchPosts();
     }
   }, [currentUser._id]);
+  const handleshowmore = async () => {
+    const startIndex = userPosts.length;
+    try {
+      const res = await fetch(
+        `/api/post/getposts?userId=${currentUser._id}&startIndex=${startIndex}`
+      );
+      const data = await res.json();
+      if (res.ok) {
+        setUserPosts((prev) => [...prev, ...data.posts]);
+        if (data.posts.length < 9) {
+          setShowMore(false);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   return (
-    <div className="table-auto overflow-x-scroll scrollbar md:mx-auto p-3 scrollbar-track-slate-100 scrollbar-thumb-slate-300">
+    <div className="w-full overflow-x-scroll scrollbar md:mx-auto p-3 scrollbar-track-slate-100 scrollbar-thumb-slate-300">
       {currentUser.isAdmin && userPosts.length > 0 ? (
         <>
           <Table hoverable className="shadow-md   ">
@@ -83,6 +104,16 @@ const DashPosts = () => {
               </Table.Body>
             ))}
           </Table>
+          {showMore && (
+            <Button
+              onClick={handleshowmore}
+              className="mx-auto my-5 w-full self-center items-center "
+              outline
+            >
+              {" "}
+              Show More
+            </Button>
+          )}
         </>
       ) : (
         <p>You have no posts yet</p>
