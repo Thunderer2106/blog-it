@@ -12,7 +12,7 @@ const DashPosts = () => {
   const [showMore, setShowMore] = useState(true);
   const [showmodal, setshowmodal] = useState(false);
   const [postIdtodelete, setPostIdtodelete] = useState();
-  console.log(userPosts);
+  // console.log(userPosts);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -86,7 +86,7 @@ const DashPosts = () => {
               </Table.HeadCell>
             </Table.Head>
             {userPosts.map((post) => (
-              <Table.Body className="">
+              <Table.Body className="" key={post._id}>
                 <Table.Row className="bg-white divide-y-2 dark:border-gray-700 dark:bg-gray-800  ">
                   <Table.Cell>
                     {" "}
