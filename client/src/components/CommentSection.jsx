@@ -3,13 +3,69 @@ import { Alert, Button, Textarea } from "flowbite-react";
 import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 export const CommentSection = ({ postId }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const [commentError, setCommentError] = useState(null);
+  const navigate = useNavigate();
   console.log(comments);
+  // const handleLike = async (commentId) => {
+  //   try {
+  //     if (!currentUser) {
+  //       navigate("/sign-in");
+  //       return;
+  //     }
+  //     const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+  //       method: "PUT",
+  //     });
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       setComments(
+  //         comments.map((comment) =>
+  //           comment._id === commentId
+  //             ? {
+  //                 ...comment,
+  //                 likes: data.likes,
+  //                 numberOfLikes: data.likes.length,
+  //               }
+  //             : comment
+  //         )
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
+  const handleLike = async (commentId) => {
+    try {
+      if (!currentUser) {
+        navigate("/sign-in");
+        return;
+      }
+      const res = await fetch(`/api/comment/likeComment/${commentId}`, {
+        method: "PUT",
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setComments(
+          comments.map((comment) =>
+            comment._id === commentId
+              ? {
+                  ...comment,
+                  likes: data.likes,
+                  numberofLikes: data.likes.length,
+                }
+              : comment
+          )
+        );
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -134,7 +190,7 @@ export const CommentSection = ({ postId }) => {
             <Comment
               key={comment._id}
               comment={comment}
-              // onLike={handleLike}
+              onLike={handleLike}
               // onEdit={handleEdit}
               // onDelete={(commentId) => {
               //   setShowModal(true);
