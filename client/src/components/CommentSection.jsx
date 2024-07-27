@@ -66,6 +66,13 @@ export const CommentSection = ({ postId }) => {
       console.log(error.message);
     }
   };
+  const handleEdit = async (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, content: editedContent } : c
+      )
+    );
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (comment.length > 200) {
@@ -191,7 +198,7 @@ export const CommentSection = ({ postId }) => {
               key={comment._id}
               comment={comment}
               onLike={handleLike}
-              // onEdit={handleEdit}
+              onEdit={handleEdit}
               // onDelete={(commentId) => {
               //   setShowModal(true);
               //   setCommentToDelete(commentId);
