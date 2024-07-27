@@ -153,7 +153,7 @@ export const CommentSection = ({ postId }) => {
     getComments();
   }, [postId]);
   return (
-    <div className="items-center w-full mx-auto p-5 max-w-3xl">
+    <div className="items-center w-full mx-auto p-5 max-w-4xl">
       {currentUser ? (
         <div className="flex flex-row gap-1 my-5 text-lg items-center">
           <p>Signed in as: </p>
