@@ -16,7 +16,8 @@ import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import ScrollToTop from "./components/ScrollToTop";
 import Search from "./pages/Search";
-import { Chat } from "./pages/ChatPage";
+import { ChatPage } from "./pages/ChatPage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -37,7 +38,8 @@ function App() {
         </Route>
         <Route path="/projects" element={<Projects />}></Route>
         <Route path="/post/:postSlug" element={<PostPage />}></Route>
-        <Route path="/chat/:postSlug" element={<Chat/>}></Route>
+        <Route path="/chat/:postSlug" element={<ChatPage />}></Route>
+        {/* <Route path="/chatt" element={<Chat />}></Route> */}
       </Routes>
       <FooterCom />
     </BrowserRouter>
