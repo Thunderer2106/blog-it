@@ -1,11 +1,8 @@
-
 import { errorHandler } from "../utils/error.js";
 import Post from "../models/post.model.js";
 import { OpenAIClient, AzureKeyCredential } from "@azure/openai";
 
 export const getResponse = async (req, res, next) => {
-
-
   try {
     console.log(req.body.slug);
     const post = await Post.find({ slug: req.body.slug });
@@ -18,11 +15,9 @@ export const getResponse = async (req, res, next) => {
 
     Use the above content to answer any questions the user may have.`;
     const endpoint = "https://interbotapikey.openai.azure.com/";
+    const apii = "15dc6b3b54fb4b00b9c860104f378122";
 
-    const client = new OpenAIClient(
-      endpoint,
-      new AzureKeyCredential(process.env.OPEN_AI_KEY)
-    );
+    const client = new OpenAIClient(endpoint, new AzureKeyCredential(apii));
 
     const messageText = [
       {
