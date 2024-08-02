@@ -9,24 +9,24 @@ import chatRoutes from "./routes/chat.route.js";
 import cookieParser from "cookie-parser";
 import path from "path";
 dotenv.config();
-mongoose
-  .connect("mongodb://localhost:27017/blog")
-  .then(() => {
-    console.log("mongo connected");
-  })
-  .catch((err) => {
-    console.log(err);
-  });
 // mongoose
-//   .connect(
-//     "mongodb+srv://akash:akash@blogit-cluster.ohyogjg.mongodb.net/blog-it?retryWrites=true&w=majority&appName=Blogit-Cluster"
-//   )
+//   .connect("mongodb://localhost:27017/blog")
 //   .then(() => {
 //     console.log("mongo connected");
 //   })
 //   .catch((err) => {
 //     console.log(err);
 //   });
+mongoose
+  .connect(
+    "mongodb+srv://akash:akash@blogit-cluster.ohyogjg.mongodb.net/blog-it?retryWrites=true&w=majority&appName=Blogit-Cluster"
+  )
+  .then(() => {
+    console.log("mongo connected");
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
 const __dirname = path.resolve();
 const app = express();
