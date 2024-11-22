@@ -68,6 +68,32 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
+export const UpgradetoAdmin = async (req, res, next) => {
+  console.log("came here");
+  if (!req.user.isAdmin) {
+    return next(
+      errorHandler(403, "You aren't allowed to upgrade this account")
+    );
+  }
+  try {
+    const userr = await User.findById(req.params.userId);
+    console.log(userr);
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        $set: {
+          isAdmin: !userr.isAdmin,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("unable to upgrade error within try");
+    next(error);
+  }
+};
+
 export const signout = async (req, res, next) => {
   try {
     res
@@ -117,7 +143,7 @@ export const getUsers = async (req, res, next) => {
 export const getUser = async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    const user = await User.findById(userId); 
+    const user = await User.findById(userId);
     if (!user) {
       return next(errorHandler(404, "User not found"));
     }

@@ -12,7 +12,10 @@ const DashUsers = () => {
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showmodal, setshowmodal] = useState(false);
+  const [showupgrademodal, setshowupgrademodal] = useState(false);
   const [userIdtodelete, setUserIdtodelete] = useState();
+  const [userIdtoUpgrade, setUserIdtoUpgrade] = useState();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -43,12 +46,62 @@ const DashUsers = () => {
       if (!res.ok) {
         console.log(data.message);
       } else {
-        setUsers((prev) => prev.filter((user) => user._id != userIdtodelete));
+        setUsers((prev) => prev.filter((user) => user._id != userIdtoUpgrade));
       }
     } catch (error) {
       console.log(error.message);
     }
   };
+  // const handleUpgrade = async () => {
+  //   setshowupgrademodal(false);
+  //   try {
+  //     const res = await fetch(`/api/user/upgrade/${userIdtoUpgrade}`, {
+  //       method: "PUT",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     });
+  //     console.log(res);
+  //     const data = await res.json();
+  //     if (!res.ok) {
+  //       console.log(data.message);
+  //     }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
+  const handleUpgrade = async () => {
+    setshowupgrademodal(false);
+    setIsLoading(true); // Show the loader
+    try {
+      const res = await fetch(`/api/user/upgrade/${userIdtoUpgrade}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        console.log("User upgraded successfully");
+
+        // Re-fetch the users after a successful upgrade
+        const usersResponse = await fetch(`/api/user/getusers`);
+        const usersData = await usersResponse.json();
+        if (usersResponse.ok) {
+          setUsers(usersData.users);
+        }
+      }
+    } catch (error) {
+      console.log(error.message);
+    } finally {
+      setIsLoading(false); // Hide the loader
+    }
+  };
+
   const handleshowmore = async () => {
     const startIndex = users.length;
     try {
@@ -66,6 +119,11 @@ const DashUsers = () => {
   };
   return (
     <div className="w-full overflow-x-scroll scrollbar md:mx-auto p-3 scrollbar-track-slate-100 scrollbar-thumb-slate-300">
+      {isLoading && (
+        <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50">
+          <div className="loader border-t-transparent border-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+        </div>
+      )}
       {currentUser.isAdmin && users.length > 0 ? (
         <>
           <Table hoverable className="shadow-md   ">
@@ -76,6 +134,7 @@ const DashUsers = () => {
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell> Admin </Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
+              <Table.HeadCell>Upgrade</Table.HeadCell>
             </Table.Head>
             {users.map((user) => (
               <Table.Body className="" key={user._id}>
@@ -118,6 +177,17 @@ const DashUsers = () => {
                       className="text-red-500 hover:underline cursor-pointer"
                     >
                       Delete
+                    </span>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <span
+                      onClick={() => {
+                        setshowupgrademodal(true);
+                        setUserIdtoUpgrade(user._id);
+                      }}
+                      className="text-blue-500 hover:underline cursor-pointer"
+                    >
+                      Upgrade
                     </span>
                   </Table.Cell>
                   {/* <Table.Cell>
@@ -171,6 +241,36 @@ const DashUsers = () => {
                   Yes ,I am sure
                 </Button>
                 <Button color="gray" onClick={() => setshowmodal(false)}>
+                  No,Cancel
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      }
+      {
+        <Modal
+          show={showupgrademodal}
+          onClose={() => {
+            setshowupgrademodal(false);
+          }}
+          popup
+          size="md"
+        >
+          <Modal.Header></Modal.Header>
+          <Modal.Body>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className="h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto" />
+              <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400 ">
+                {" "}
+                Are you sure that you want to modify status of your user
+              </h3>
+              <div className=" flex flex-row justify-between">
+                <Button color="success" onClick={handleUpgrade}>
+                  {" "}
+                  Yes ,I am sure
+                </Button>
+                <Button color="gray" onClick={() => setshowupgrademodal(false)}>
                   No,Cancel
                 </Button>
               </div>
