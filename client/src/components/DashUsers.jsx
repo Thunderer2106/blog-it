@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { Button, Table, TableCell, TableRow } from "flowbite-react";
+import { Toast } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
@@ -16,6 +17,7 @@ const DashUsers = () => {
   const [userIdtodelete, setUserIdtodelete] = useState();
   const [userIdtoUpgrade, setUserIdtoUpgrade] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -82,9 +84,10 @@ const DashUsers = () => {
       });
 
       const data = await res.json();
+      console.log(data);
 
       if (!res.ok) {
-        console.log(data.message);
+        setToastMessage("A admin cannot demote another admin.");
       } else {
         console.log("User upgraded successfully");
 
@@ -100,6 +103,9 @@ const DashUsers = () => {
     } finally {
       setIsLoading(false); // Hide the loader
     }
+  };
+  const clearToast = () => {
+    setToastMessage(null);
   };
 
   const handleshowmore = async () => {
@@ -122,6 +128,20 @@ const DashUsers = () => {
       {isLoading && (
         <div className="flex justify-center items-center fixed inset-0 bg-black bg-opacity-50 z-50">
           <div className="loader border-t-transparent border-4 border-blue-500 rounded-full w-12 h-12 animate-spin"></div>
+        </div>
+      )}
+      {toastMessage && (
+        <div
+          className={`fixed top-5 left-5 bg-white shadow-lg rounded-lg p-4 flex items-center gap-3 animate-slide-in transition-transform transform duration-500`}
+        >
+          <div className="text-blue-600 font-medium">{toastMessage}</div>
+          <button
+            onClick={clearToast}
+            className="ml-auto p-1 text-gray-400 hover:text-gray-900 focus:outline-none"
+            aria-label="Close"
+          >
+            ✖
+          </button>
         </div>
       )}
       {currentUser.isAdmin && users.length > 0 ? (
