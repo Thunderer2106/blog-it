@@ -134,7 +134,7 @@ const DashUsers = () => {
               <Table.HeadCell>Email</Table.HeadCell>
               <Table.HeadCell> Admin </Table.HeadCell>
               <Table.HeadCell>Delete</Table.HeadCell>
-              <Table.HeadCell>Upgrade</Table.HeadCell>
+              <Table.HeadCell>Edit Role</Table.HeadCell>
             </Table.Head>
             {users.map((user) => (
               <Table.Body className="" key={user._id}>

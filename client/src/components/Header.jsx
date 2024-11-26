@@ -46,7 +46,10 @@ const Header = () => {
 
   return (
     <Navbar className="border-b-2 bg-gradient-to-r from-teal-500 to-cyan-500 text-white">
-      <Link to="/" className="self-center whitespace-nowrap text-sm sm:text-xl font-bold hover:text-gold transition duration-300">
+      <Link
+        to="/"
+        className="self-center whitespace-nowrap text-sm sm:text-xl font-bold hover:text-gold transition duration-300"
+      >
         BLOG IT
       </Link>
       <form onSubmit={handleSubmit} className="flex items-center">
@@ -78,15 +81,22 @@ const Header = () => {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm text-white">@{currentUser.username}</span>
+              <span className="block text-sm text-white">
+                @{currentUser.username}
+              </span>
               <span className="block text-sm font-medium truncate text-white">
                 {currentUser.email}
               </span>
             </Dropdown.Header>
             <Link to={"/dashboard?tab=profile"}>
-              <Dropdown.Item className="hover:bg-teal-600 transition duration-300">Profile</Dropdown.Item>
+              <Dropdown.Item className="hover:bg-teal-600 transition duration-300">
+                Profile
+              </Dropdown.Item>
             </Link>
-            <Dropdown.Item className="hover:bg-teal-600 transition duration-300" onClick={() => handlesignout()}>
+            <Dropdown.Item
+              className="hover:bg-teal-600 transition duration-300"
+              onClick={() => handlesignout()}
+            >
               Sign Out
             </Dropdown.Item>
           </Dropdown>
@@ -100,32 +110,47 @@ const Header = () => {
         <Navbar.Toggle />
       </div>
       <Navbar.Collapse className="">
-        <Navbar.Link active={path === "/"} as={"div"} className="hover:text-coral-500 transition duration-300">
+        <Navbar.Link
+          active={path === "/"}
+          as={"div"}
+          className="hover:text-coral-500 transition duration-300"
+        >
           <Link to="/">Home</Link>
         </Navbar.Link>
-        <Navbar.Link active={path === "/about"} as={"div"} className="hover:text-coral-500 transition duration-300">
+        <Navbar.Link
+          active={path === "/about"}
+          as={"div"}
+          className="hover:text-coral-500 transition duration-300"
+        >
           <Link to="/about">About</Link>
         </Navbar.Link>
+        {currentUser ? (
+          currentUser.isAdmin ? (
+            <Navbar.Link
+              active={path === "/dashboard?tab=dash"}
+              as={"div"}
+              className="hover:text-coral-500 transition duration-300"
+            >
+              <Link to="/dashboard?tab=dash">Dashboard</Link>
+            </Navbar.Link>
+          ) : (
+            <Navbar.Link
+              active={path === "/dashboard?tab=profile"}
+              as={"div"}
+              className="hover:text-coral-500 transition duration-300"
+            >
+              <Link to="/dashboard?tab=profile">profile</Link>
+            </Navbar.Link>
+          )
+        ) : (
+          ""
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
 };
 
 export default Header;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
@@ -251,4 +276,3 @@ export default Header;
 // };
 
 // export default Header;
-
