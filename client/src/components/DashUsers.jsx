@@ -7,9 +7,12 @@ import { Toast } from "flowbite-react";
 import { Link } from "react-router-dom";
 import { Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { signoutsuccess } from "../redux/user/userSlice";
+import { useDispatch } from "react-redux";
 import { FaCheck, FaTimes } from "react-icons/fa";
 const DashUsers = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [users, setUsers] = useState([]);
   const [showMore, setShowMore] = useState(true);
   const [showmodal, setshowmodal] = useState(false);
@@ -38,6 +41,22 @@ const DashUsers = () => {
       fetchUsers();
     }
   }, [currentUser._id]);
+  const handlesignout = async () => {
+    try {
+      const res = await fetch(`/api/user/signout`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      console.log("signingoff");
+      if (!res.ok) {
+        console.log(data.message);
+      } else {
+        dispatch(signoutsuccess());
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleDelete = async () => {
     setshowmodal(false);
     try {
@@ -84,8 +103,13 @@ const DashUsers = () => {
       });
 
       const data = await res.json();
-      console.log(data);
-
+      // console.log(data);
+      console.log(currentUser);
+      console.log(userIdtoUpgrade);
+      if (userIdtoUpgrade === currentUser._id) {
+        console.log("going to modify the same user");
+        handlesignout();
+      }
       if (!res.ok) {
         setToastMessage("A admin cannot demote another admin.");
       } else {

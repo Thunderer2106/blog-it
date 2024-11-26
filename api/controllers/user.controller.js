@@ -77,8 +77,10 @@ export const UpgradetoAdmin = async (req, res, next) => {
   }
   try {
     const userr = await User.findById(req.params.userId);
+    console.log(req.user);
     console.log(userr);
-    if (!userr.isAdmin) {
+    if (!userr.isAdmin || req.user.id == req.params.userId) {
+      console.log("came to update status");
       const updatedUser = await User.findByIdAndUpdate(
         req.params.userId,
         {
