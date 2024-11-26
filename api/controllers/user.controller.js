@@ -78,16 +78,20 @@ export const UpgradetoAdmin = async (req, res, next) => {
   try {
     const userr = await User.findById(req.params.userId);
     console.log(userr);
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.userId,
-      {
-        $set: {
-          isAdmin: !userr.isAdmin,
+    if (!userr.isAdmin) {
+      const updatedUser = await User.findByIdAndUpdate(
+        req.params.userId,
+        {
+          $set: {
+            isAdmin: !userr.isAdmin,
+          },
         },
-      },
-      { new: true }
-    );
-    res.status(200).json(updatedUser);
+        { new: true }
+      );
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(400).json("you cant demote a admin");
+    }
   } catch (error) {
     console.log("unable to upgrade error within try");
     next(error);
