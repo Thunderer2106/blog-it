@@ -78,16 +78,18 @@ npm run dev
   ![img](/images/blogs.png)
 - ### **/search**: Allows user to search for posts with option of multiple filters.
   ![img](/images/searchandfilter.png)
-- ### **/search**: Allows user to read blogs and comments.
+- ### **/post/{postslug}**: Allows user to read blogs and comments.
   ![img](/images/blogwithcomments.png)
+- ### **/chat/{postslug}**: Allows user to chat with blog.
+  ![img](/images/chatbot.png)
 
 ## Admin routes:
 
 - ### **/dashboard?tab=users**: Shows all the user data.
   ![img](/images/usermanagementby%20admin.png)
 - ### **/dashboard?tab=posts**: Shows all the blogs data.
-  ![img](/images/postmanagement.png.png)
+  ![img](/images/postmanagement.png)
 - ### **/dashboard?tab=comments**: Shows all the comments data.
-  ![img](/images/usermanagementby%20admin.png)
+  ![img](/images/commentsmonitor.png)
 - ### **/dashboard?tab=dashboard**: Shows all the tables.
   ![img](/images/admindashboard.png)
