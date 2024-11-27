@@ -3,8 +3,8 @@
 This full stack webapp enables users to explore the blogs they wish to read and also chat with blogs for immediate and structured responses , like them too . admins of the application are allowed to manage posts,comments,users and also upgrade or demote users.
 -The deployed version of site : https://blog-it-1.onrender.com/
 ## Admin credentials: 
-- email-admin@gmail.com 
-- password-admin@2004
+- email- admin@gmail.com 
+- password- admin@2004
 
 ## Features
 
